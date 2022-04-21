@@ -1,0 +1,10 @@
+# never commit IDE droppings into source control
+.idea
+.shelf
+*.ipr
+*.iws
+*.iml
+*.ids
+
+# python virtual env
+.env
