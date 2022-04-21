@@ -1,0 +1,3 @@
+adafruit_requests==1.12.0
+adafruit_wiznet5k==1.12.5
+adafruit_wsgi==1.1.9
