@@ -184,7 +184,7 @@ query what the current setting of the TV are, and there are no examples of those
 
 To start, I made a basic serial endpoint, that would allow me to construct links to send specific
 command codes to the serial port. All commands are eight characters, which is nice and uniform.
-The only wrinkle is that their protocol specifies two characters that are very annoying for URLS,
+The only wrinkle is that their protocol specifies two characters that are very annoying for URLs,
 spaces and question marks. I elect to munge hyphens for spaces and `Q` for `?`, luckily neither
 `Q` nor `-` are used in any of the commands, so it's easy to unmunge them in code prior to sending.
 
