@@ -10,7 +10,7 @@ etc. A low-power Ethernet-serial bridge device would be ideal to make that inter
 
 Hackaday [made a post](https://hackaday.com/2022/01/23/hackaday-links-january-23-2022/) that mentioned
 WIZnet was [running a contest](https://maker.wiznet.io/wiznet-ethernet-hat-contest/) to demonstrate
-products that add hardwired Ethernet to Raspberry Pi Pico boards. The WIZnet `W5100S&#8209;EVB&#8209;Pico`
+products that add hardwired Ethernet to Raspberry Pi Pico boards. The WIZnet `W5100S-EVB-Pico`
 is a Raspberry Pi Pico clone with hardwired Ethernet built right into the board. After learning that this
 product existed, I realized this was an excellent fit for making a web API for the serial interface
 on my TV. [This repository](https://github.com/chabala/pi-pico-serial-web-api)
@@ -18,7 +18,7 @@ represents [my entry into the WIZnet Ethernet HAT Contest](
 https://maker.wiznet.io/2022/01/25/web-interface-api-for-rs232-controlled-device/).
 
 If you are interested in running the project, you can copy the contents of [CIRCUITPY](CIRCUITPY) on
-to your `W5100S&#8209;EVB&#8209;Pico` running CircuitPython and stop reading and start hacking.
+to your `W5100S-EVB-Pico` running CircuitPython and stop reading and start hacking.
 
 ## Why?
 
@@ -34,16 +34,16 @@ has been on my mind for some time, ever since reading about the interface in the
 (cryptically) tweeted about it:
 
 <blockquote class="twitter-tweet" data-theme="light">
-<p lang="en" dir="ltr">Challenge accepted <a href="https://t.co/E3OuTKSHU0">pic.twitter.com/E3OuTKSHU0</a></p>
+<p lang="en" dir="ltr">Challenge accepted <br>
+<img src="https://pbs.twimg.com/media/DcyQdS9W0AIBEh4?format=jpg&name=small"></p>
 &mdash; Greg Chabala (@chabala) <a href="https://twitter.com/chabala/status/994328488529354752">May 9, 2018</a>
-</blockquote> <!--suppress JSUnresolvedLibraryURL -->
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</blockquote>
 
 But that was four years ago, what's the hangup? Well, having a serial interface is the easy part,
 but for it to be useful, something needs to talk to it. I didn't want to station a PC next to my TV.
 Even a small single board computer like a Raspberry Pi would effectively need to run 24/7 just
 to be available to push commands to the TV, which is a waste of power. The existence of the WIZnet
-`W5100S&#8209;EVB&#8209;Pico` changes that, being a microcontroller means it uses much less power
+`W5100S-EVB-Pico` changes that, being a microcontroller means it uses much less power
 than a full computer, and the integrated Ethernet reduces the additional components needed. It is
 just enough for this kind of project, and no more.
 
@@ -63,7 +63,7 @@ out there before duplicating effort.
 ## Initial plan
 
 Before entering the contest and requesting sample hardware I formed my plan. The WIZnet
-`W5100S&#8209;EVB&#8209;Pico` has an Ethernet port, I would want to expose a REST API. I also needed
+`W5100S-EVB-Pico` has an Ethernet port, I would want to expose a REST API. I also needed
 a serial connection. The Raspberry Pi Pico has a USB port, and some research showed it was capable
 of [operating in host mode](https://forums.raspberrypi.com/viewtopic.php?t=305467), so in theory I
 could connect a common USB-to-serial adapter to it.
@@ -88,7 +88,7 @@ I drew up this diagram and requested the hardware:
 ## Early successes and hurdles
 
 ![wiznet pico](documentation/20220421_203424_c.jpg "wiznet pico")
-*The tiny WIZnet `W5100S&#8209;EVB&#8209;Pico`, with a touch of electrical tape to mask the power LED*
+*The tiny WIZnet `W5100S-EVB-Pico`, with a touch of electrical tape to mask the power LED*
 
 I set up the hardware following the guide at [Ethernet Example Getting Started \[CircuitPython\].md](
 https://github.com/Wiznet/RP2040-HAT-CircuitPython/blob/master/Ethernet%20Example%20Getting%20Started%20%5BCircuitpython%5D.md)
