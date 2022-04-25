@@ -155,7 +155,7 @@ Pico-2CH-RS232](https://www.waveshare.com/pico-2ch-rs232.htm) pico-uart-to-seria
 Time to revise my diagram now that using USB host is shelved:
 ![fallback plan diagram](documentation/evb-pico-serial-v3-fallback-plan.png "fallback plan diagram")
 
-There no real downside here, except that I had to buy a pico specific serial adapter board instead
+There's no real downside here, except that I had to buy a pico specific serial adapter board instead
 of using a generic USB-serial adapter that I had on hand. The purpose of the board is to shift
 voltage levels, from the TTL levels of the pico's UARTs, to the higher ~5V levels expected by
 RS-232 devices. Also, this required soldering the header pins onto the pico, which would have
@@ -171,6 +171,8 @@ After some poking around and experimenting with WSGI, I rewrote the two `/led_on
 https://en.wikipedia.org/wiki/HATEOAS) style, and learned how to handle GET and POST parameters
 with it. It should be easier to follow that pattern and start flushing out the serial TV control
 endpoint now without making a mess of it.
+
+https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93
 
 ![LED interface screenshot](documentation/ui-screenshots/led-interface.png "LED interface screenshot")
 
