@@ -2,6 +2,9 @@
 
 Web interface & API for an RS-232 controlled device (a Sharp AQUOS TV).
 
+Update: This project won the [third place prize in WIZnet's Ethernet HAT Contest 2022](
+https://maker.wiznet.io/wiznet-ethernet-hat-contest-winners/).
+
 ## Abstract
 
 A Raspberry Pi Pico with hardwired Ethernet seems like the perfect platform to add web APIs to serial
