@@ -3,7 +3,7 @@
 Web interface & API for an RS-232 controlled device (a Sharp AQUOS TV).
 
 Update: This project won the [third place prize in WIZnet's Ethernet HAT Contest 2022](
-https://maker.wiznet.io/wiznet-ethernet-hat-contest-winners/).
+https://web.archive.org/web/20220511160854/https://maker.wiznet.io/wiznet-ethernet-hat-contest-winners/).
 
 ## Abstract
 
@@ -12,13 +12,15 @@ controlled devices. I have a TV which has an RS-232 control interface for power 
 etc. A low-power Ethernet-serial bridge device would be ideal to make that interface more usable.
 
 Hackaday [made a post](https://hackaday.com/2022/01/23/hackaday-links-january-23-2022/) that mentioned
-WIZnet was [running a contest](https://maker.wiznet.io/wiznet-ethernet-hat-contest/) to demonstrate
+WIZnet was [running a contest](
+https://web.archive.org/web/20220511161304/https://maker.wiznet.io/wiznet-ethernet-hat-contest/)
+to demonstrate
 products that add hardwired Ethernet to Raspberry Pi Pico boards. The WIZnet `W5100S-EVB-Pico`
 is a Raspberry Pi Pico clone with hardwired Ethernet built right into the board. After learning that this
 product existed, I realized this was an excellent fit for making a web API for the serial interface
 on my TV. [This repository](https://github.com/chabala/pi-pico-serial-web-api)
 represents [my entry into the WIZnet Ethernet HAT Contest](
-https://maker.wiznet.io/2022/01/25/web-interface-api-for-rs232-controlled-device/).
+https://web.archive.org/web/20220511161248/https://maker.wiznet.io/2022/01/25/web-interface-api-for-rs232-controlled-device/).
 
 If you are interested in running the project, you can copy the contents of [CIRCUITPY](CIRCUITPY) on
 to your `W5100S-EVB-Pico` running CircuitPython and stop reading and start hacking.
