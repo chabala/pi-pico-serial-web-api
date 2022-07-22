@@ -214,7 +214,7 @@ def tv_power(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 Power On command: <a href="?enable=1">Enable</a> <a href="?enable=0">Disable</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [], [response_html]
+    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
 
 
 @web_app.route("/tv/volume/")
@@ -252,7 +252,7 @@ def tv_volume(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 Mute: <a href="?m=0">Toggle</a> <a href="?m=1">Mute</a> <a href="?m=2">Unmute</a> <a href="?m=s">Status</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [], [response_html]
+    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
 
 
 @web_app.route("/tv/input/")
@@ -290,7 +290,7 @@ def tv_input(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 <a href="?i=x">Toggle</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [], [response_html]
+    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
 
 
 @web_app.route("/tv/channel/")
@@ -320,7 +320,7 @@ def tv_channel(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 <a href="?c=u">Up</a> <a href="?c=d">Down</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [], [response_html]
+    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
 
 
 def html_doc(title: str, body: str) -> str:
