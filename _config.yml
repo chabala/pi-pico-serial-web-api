@@ -1,0 +1,4 @@
+google_analytics: G-CB7P776F76
+remote_theme: chabala/primer@update-google-analytics
+plugins:
+  - jekyll-remote-theme
