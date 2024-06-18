@@ -1,9 +1,14 @@
-# pi-pico-serial-web-api
+# [pi-pico-serial-web-api](https://chabala.github.io/pi-pico-serial-web-api/)
 
 Web interface & API for an RS-232 controlled device (a Sharp AQUOS TV).
 
 Update: This project won the [third place prize in WIZnet's Ethernet HAT Contest 2022](
 https://web.archive.org/web/20220511160854/https://maker.wiznet.io/wiznet-ethernet-hat-contest-winners/).
+
+<div style="text-align: right">
+<a href="https://github.com/chabala/pi-pico-serial-web-api/">GitHub repository for this page</a> /
+<a href="https://chabala.github.io/">Up to the root page</a>
+</div>
 
 ## Abstract
 
@@ -56,10 +61,10 @@ just enough for this kind of project, and no more.
 
 Step zero in any project should be a search to see if anyone else has already done the work. I
 searched GitHub for other projects that were trying to interface with Sharp TVs and found these:
- * https://github.com/partouf/AquosComm [Pascal, 2009]
- * https://github.com/bwkeller/pyaquos [Python, 2012]
- * https://github.com/p4ddy1/aquoscontrol [Go, 2017]
- * https://github.com/neerlent/aquostv_serial [Python, 2019]
+ * [https://github.com/partouf/AquosComm](https://github.com/partouf/AquosComm) [Pascal, 2009]
+ * [https://github.com/bwkeller/pyaquos](https://github.com/bwkeller/pyaquos) [Python, 2012]
+ * [https://github.com/p4ddy1/aquoscontrol](https://github.com/p4ddy1/aquoscontrol) [Go, 2017]
+ * [https://github.com/neerlent/aquostv_serial](https://github.com/neerlent/aquostv_serial) [Python, 2019]
 
 These all target running software on a full computer rather than a microcontroller, but at least
 some were also trying to integrate with home automation software. It's always good to see what's
@@ -76,9 +81,9 @@ could connect a common USB-to-serial adapter to it.
 ### Selecting a software platform
 
 Possible software toolkits available for the Pi Pico and clones:
- * C/C++ and/or assembly - https://github.com/raspberrypi/pico-sdk
- * MicroPython - https://github.com/micropython/micropython
- * CircuitPython - https://github.com/adafruit/circuitpython
+ * C/C++ and/or assembly - [https://github.com/raspberrypi/pico-sdk](https://github.com/raspberrypi/pico-sdk)
+ * MicroPython - [https://github.com/micropython/micropython](https://github.com/micropython/micropython)
+ * CircuitPython - [https://github.com/adafruit/circuitpython](https://github.com/adafruit/circuitpython)
 
 My C++ is very rusty, so one of the Python variants seemed like a good place to start. CircuitPython is a
 fork of MicroPython with an emphasis on ease of use for beginners, and is backed by Adafruit to ensure
@@ -125,28 +130,35 @@ CircuitPython.
 Googled the error, but the results are people using CircuitPython on Raspberry Pi (not Pi Pico)
 being advised to install `adafruit_blinka`, which is an abstraction layer that I should not need.
 
-I started poking around in the issues on https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k
-and found https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k/pull/49 which links to
-https://gist.github.com/anecdata/3c6f37c05a91f7b769dad7517bfe3aa1 which is example code that works
+I started poking around in the issues on [https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k](
+https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k)
+and found [https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k/pull/49](
+https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k/pull/49) which links to
+[https://gist.github.com/anecdata/3c6f37c05a91f7b769dad7517bfe3aa1](
+https://gist.github.com/anecdata/3c6f37c05a91f7b769dad7517bfe3aa1) which is example code that works
 fine.
 
 Looking back at the WIZnet Getting Started guide, it seems they may have intended
-https://github.com/Wiznet/RP2040-HAT-CircuitPython/blob/master/examples/Network/W5x00_Ping_Test.py
+[https://github.com/Wiznet/RP2040-HAT-CircuitPython/blob/master/examples/Network/W5x00_Ping_Test.py](
+https://github.com/Wiznet/RP2040-HAT-CircuitPython/blob/master/examples/Network/W5x00_Ping_Test.py)
 as initial example code. It's very similar to the working gist. Of interest though, they
 both use different pins for the reset pin. The WIZnet example is correctly using `GP20`, but using
 that pin in the gist's code causes it to fail to initialize. This turns out to be a bug in the
-driver library, and I opened https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k/issues/51
+driver library, and I opened [https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k/issues/51](
+https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k/issues/51)
 to fix it.
 
 Tested web server example code from
-https://github.com/Wiznet/RP2040-HAT-CircuitPython/blob/master/examples/HTTP/Webserver/W5x00_WebServer.py
+[https://github.com/Wiznet/RP2040-HAT-CircuitPython/blob/master/examples/HTTP/Webserver/W5x00_WebServer.py](
+https://github.com/Wiznet/RP2040-HAT-CircuitPython/blob/master/examples/HTTP/Webserver/W5x00_WebServer.py)
 which works and shows the basics of URL routing.
 
 At this point I've gotten network functionality working, and I want to test the serial end of things.
 Based on some conversation on the [Adafruit Discord](http://adafru.it/discord), while the Pi Pico
 hardware supports USB host mode, CircuitPython itself does not yet. There is work underway in the
 USB stack (TinyUSB), and preliminary work on the CircuitPython API for it:
-https://github.com/tannewt/circuitpython/tree/usb_host but nothing ready for use.
+[https://github.com/tannewt/circuitpython/tree/usb_host](
+https://github.com/tannewt/circuitpython/tree/usb_host) but nothing ready for use.
 
 My option for using the USB serial adapter in the near term may only be to implement the USB host
 logic myself in C, which is more than I bargained for. As a result, I ordered a [Waveshare
@@ -177,7 +189,36 @@ https://en.wikipedia.org/wiki/HATEOAS) style, and learned how to handle GET and 
 with it. It should be easier to follow that pattern and start flushing out the serial TV control
 endpoint now without making a mess of it.
 
-https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93
+From: [https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93](
+https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93)
+
+```python
+@web_app.route("/led/", ["GET", "POST"])
+def led(request):
+    print(f"\n{request.method} {request.path}")
+    set_value = None
+    if request.method == "GET":
+        set_value = request.query_params.get('set')
+    elif request.method == "POST":
+        post_params = request.__parse_query_params(request.body.getvalue())
+        request.body.close()
+        set_value = post_params.get('set')
+    if set_value is not None:
+        if set_value == 'toggle':
+            user_led.value = not user_led.value
+        else:
+            user_led.value = True if set_value == 'on' else False
+    status = 'on' if user_led.value else 'off'
+    return "200 OK", [], [html_doc("User LED status", f"""LED is {status}<br><br>
+    <form action="/led/" method="post">
+    Actions:<br>
+    <input type="radio" id="on" name="set" value="on"><label for="on"> turn LED on</label><br>
+    <input type="radio" id="off" name="set" value="off"><label for="off"> turn LED off</label><br>
+    <input type="radio" id="toggle" name="set" value="toggle"><label for="toggle"> toggle LED state</label><br>
+    <button type="submit">Submit</button>
+    </form><br><br>
+    <a href="/" id="root">Back to root</a>""")]
+```
 
 ![LED interface screenshot](documentation/ui-screenshots/led-interface.png "LED interface screenshot")
 
@@ -259,6 +300,7 @@ The `/led/` and `/serial/` endpoints were already shown above.
 * The `/tv/power/` endpoint:
 
 ![power](documentation/ui-screenshots/tv-power.png "power")
+
 ![power status](documentation/ui-screenshots/tv-power-status.png "power status")
 
 Interacting with any of the commands will return to the same page, but the response from the
@@ -268,7 +310,9 @@ level of the API structure.
 * The `/tv/volume/` endpoint:
 
 ![volume set](documentation/ui-screenshots/tv-volume-set.png "volume set")
+
 ![volume status](documentation/ui-screenshots/tv-volume-status.png "volume status")
+
 ![mute status](documentation/ui-screenshots/tv-mute-status.png "mute status")
 
 * The `/tv/input/` endpoint:
@@ -366,9 +410,9 @@ final product out of it.
 
 All project code is MIT licensed. Adafruit library code is present as a convenience, but it retains
 its own license(s), refer to the library repositories for more detail:
- * https://github.com/adafruit/Adafruit_CircuitPython_Requests
- * https://github.com/adafruit/Adafruit_CircuitPython_WSGI
- * https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k
+ * [https://github.com/adafruit/Adafruit_CircuitPython_Requests](https://github.com/adafruit/Adafruit_CircuitPython_Requests)
+ * [https://github.com/adafruit/Adafruit_CircuitPython_WSGI](https://github.com/adafruit/Adafruit_CircuitPython_WSGI)
+ * [https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k](https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k)
 
 This repository contains a reproduction of a single page of a manual, presumed to be under copyright
 by SHARP ELECTRONICS CORPORATION. I assert fair use for including it.
