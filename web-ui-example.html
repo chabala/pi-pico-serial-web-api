@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.5">
+<title>TV controls</title>
+<style>
+fieldset {display:inline;}
+.toplevel {min-width:153px;}
+</style>
+<script type="text/javascript">
+    const tvService = 'http://your-device.example.com/tv/';
+    function get(url) {
+        const req = new XMLHttpRequest();
+        req.open('GET', tvService + url);
+        req.send();
+    }
+    window.onload = function() {
+        a = document.getElementById("serviceUrl");
+        a.setAttribute("href", tvService);
+        a.textContent = tvService;
+    };
+</script>
+</head>
+<body>
+<fieldset class="toplevel">
+<legend>Power control</legend>
+<button type="button" onclick="get('power/?set=1')" accesskey="o">Power <u>O</u>n</button>
+<button type="button" onclick="get('power/?set=0')" accesskey="f">Power O<u>f</u>f</button>
+</fieldset><br>
+<fieldset class="toplevel">
+<legend>Input selection</legend>
+<button type="button" onclick="get('input/?i=t')" accesskey="t">switch to <u>T</u>V</button><br>
+<fieldset>
+<legend>Preset channels</legend>
+<button type="button" onclick="get('channel/?c=0501')">NBC</button><br>
+<button type="button" onclick="get('channel/?c=0901')">WGN</button><br>
+<button type="button" onclick="get('channel/?c=1101')">WTTW</button><br>
+<button type="button" onclick="get('channel/?c=1102')">WTTW Prime</button><br>
+<button type="button" onclick="get('channel/?c=1103')">WTTW Create</button><br>
+</fieldset><br><br>
+<button type="button" onclick="get('input/?i=5')">switch to Chromecast</button><br>
+<button type="button" onclick="get('input/?i=6')">switch to PS3</button><br>
+<button type="button" onclick="get('input/?i=7')" accesskey="p">switch to <u>P</u>S4</button>
+</fieldset><br>
+<fieldset class="toplevel">
+<legend>Volume control</legend>
+<button type="button" onclick="get('volume/?m=0')" accesskey="m">toggle <u>m</u>ute</button><br><br>
+<button type="button" onclick="get('volume/?v=4')">set volume to 4</button><br>
+<button type="button" onclick="get('volume/?v=6')">set volume to 6</button><br>
+<button type="button" onclick="get('volume/?v=8')">set volume to 8</button><br>
+<button type="button" onclick="get('volume/?v=10')">set volume to 10</button><br>
+<button type="button" onclick="get('volume/?v=15')">set volume to 15</button><br>
+<button type="button" onclick="get('volume/?v=20')">set volume to 20</button>
+</fieldset><br>
+<p><a id="serviceUrl" target="_blank"></a></p>
+<p><a id="schedule" href="https://titantv.com/" target="_blank">TV schedules by TitanTV</a></p>
+<p><a id="tracking" href="https://trakt.tv/dashboard" target="_blank">Track your watch history with trakt.tv</a></p>
+</body>
+</html>

@@ -30,6 +30,10 @@ https://web.archive.org/web/20220511161248/https://maker.wiznet.io/2022/01/25/we
 If you are interested in running the project, you can copy the contents of [CIRCUITPY](CIRCUITPY) on
 to your `W5100S-EVB-Pico` running CircuitPython and stop reading and start hacking.
 
+Update: I've added a sample of a [simple HTML web UI](web-ui-example.html) that uses this project as
+the backend. It can be customized to the preset channels and input labels you desire. It is compact
+enough to be easily usable on phone screens, but also has keyboard shortcuts for desktop use.
+
 ## Why?
 
 My TV already has a remote, what's the point? Mostly for better integration with home automation
