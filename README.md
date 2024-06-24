@@ -27,7 +27,8 @@ on my TV. [This repository](https://github.com/chabala/pi-pico-serial-web-api)
 represents [my entry into the WIZnet Ethernet HAT Contest](
 https://web.archive.org/web/20220511161248/https://maker.wiznet.io/2022/01/25/web-interface-api-for-rs232-controlled-device/).
 
-If you are interested in running the project, you can copy the contents of [CIRCUITPY](CIRCUITPY) on
+If you are interested in running the project, you can copy the contents of [CIRCUITPY](
+https://github.com/chabala/pi-pico-serial-web-api/tree/master/CIRCUITPY/) on
 to your `W5100S-EVB-Pico` running CircuitPython and stop reading and start hacking.
 
 Update: I've added a sample of a [simple HTML web UI](web-ui-example.html) that uses this project as
@@ -193,8 +194,8 @@ https://en.wikipedia.org/wiki/HATEOAS) style, and learned how to handle GET and 
 with it. It should be easier to follow that pattern and start flushing out the serial TV control
 endpoint now without making a mess of it.
 
-From: [https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93](
-https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93)
+From: <a href="https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93">
+https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93</a>
 
 ```python
 @web_app.route("/led/", ["GET", "POST"])
