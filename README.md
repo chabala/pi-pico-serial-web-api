@@ -194,8 +194,7 @@ https://en.wikipedia.org/wiki/HATEOAS) style, and learned how to handle GET and 
 with it. It should be easier to follow that pattern and start flushing out the serial TV control
 endpoint now without making a mess of it.
 
-From: <a href="https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93">
-https://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93</a>
+From: https&zwnj;://github.com/chabala/pi-pico-serial-web-api/blob/e81f4f882127e0290d8b4310b3c9e9d4933914b9/CIRCUITPY/code.py#L69-L93
 
 ```python
 @web_app.route("/led/", ["GET", "POST"])
