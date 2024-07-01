@@ -1,2 +1,2 @@
-Adafruit CircuitPython 7.3.2 on 2022-07-20; W5100S-EVB-Pico with rp2040
+Adafruit CircuitPython 9.0.5 on 2024-05-22; W5100S-EVB-Pico with rp2040
 Board ID:wiznet_w5100s_evb_pico

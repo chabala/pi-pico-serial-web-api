@@ -12,11 +12,10 @@ try:
 except ImportError:
     pass
 
-import adafruit_requests as requests
+import adafruit_requests
+import adafruit_connection_manager
 from adafruit_wiznet5k.adafruit_wiznet5k import WIZNET5K
-from adafruit_wsgi.wsgi_app import WSGIApp
-import adafruit_wiznet5k.adafruit_wiznet5k_wsgiserver as server
-import adafruit_wiznet5k.adafruit_wiznet5k_socket as socket
+from adafruit_httpserver import Server, Request, Response, Redirect
 
 # SPI0
 SPI0_SCK = board.GP18
@@ -30,7 +29,7 @@ W5x00_RSTn = board.GP20
 print("Wiznet5k serial web interface")
 
 # define your own unique MAC address for the network interface
-MAC_ADDR = (0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED)
+MAC_ADDR = "DE:AD:BE:EF:FE:ED"
 
 user_led = digitalio.DigitalInOut(board.GP25)
 user_led.direction = digitalio.Direction.OUTPUT
@@ -44,7 +43,7 @@ eth_rst = digitalio.DigitalInOut(W5x00_RSTn)
 eth_rst.direction = digitalio.Direction.OUTPUT
 try:
     eth = WIZNET5K(spi_bus, eth_cs, reset=eth_rst, is_dhcp=True, mac=MAC_ADDR,
-                   hostname="W5100S", dhcp_timeout=30, debug=False)
+                   hostname="W5100S", debug=False)
 except AssertionError:
     # DHCP can fail, rarely, which will fail an assertion and halt the program
     # https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k/issues/57
@@ -58,31 +57,31 @@ print("MAC Address:", ":".join("%02X" % _ for _ in eth.mac_address))
 print("IP Address:", eth.pretty_ip(eth.ip_address))
 
 # Initialize a requests object with a socket and ethernet interface
-requests.set_socket(socket, eth)
+pool = adafruit_connection_manager.get_radio_socketpool(eth)
+ssl_context = adafruit_connection_manager.get_radio_ssl_context(eth)
+requests = adafruit_requests.Session(pool, ssl_context)
 
 # Here we create our application, registering the
 # following functions to be called on specific HTTP GET requests routes
-web_app = WSGIApp()
+web_app = Server(pool, debug=True)
 
 
 # HTTP Request handlers
 @web_app.route("/led/", ["GET", "POST"])
-def led(request):
+def led(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     set_value = None
     if request.method == "GET":
         set_value = request.query_params.get('set')
     elif request.method == "POST":
-        post_params = request.__parse_query_params(request.body.getvalue())
-        request.body.close()
-        set_value = post_params.get('set')
+        set_value = request.form_data.get('set')
     if set_value is not None:
         if set_value == 'toggle':
             user_led.value = not user_led.value
         else:
             user_led.value = True if set_value == 'on' else False
     status = 'on' if user_led.value else 'off'
-    return "200 OK", [], [html_doc("User LED status", f"""LED is {status}<br><br>
+    return Response(request, body=html_doc("User LED status", f"""LED is {status}<br><br>
     <form action="/led/" method="post">
     Actions:<br>
     <input type="radio" id="on" name="set" value="on"><label for="on"> turn LED on</label><br>
@@ -90,13 +89,13 @@ def led(request):
     <input type="radio" id="toggle" name="set" value="toggle"><label for="toggle"> toggle LED state</label><br>
     <button type="submit">Submit</button>
     </form><br><br>
-    <a href="/" id="root">Back to root</a>""")]
+    <a href="/" id="root">Back to root</a>"""), content_type="text/html")
 
 
 @web_app.route("/led")
-def led_redirect(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def led_redirect(request: Request) -> Response:
     print(f"\nRedirect {request.path} -> /led/")
-    return '302 Found', [('Location', '/led/')], []
+    return Redirect(request, "/led/")
 
 
 def serial_commands() -> str:
@@ -129,12 +128,12 @@ def serial_commands() -> str:
 
 
 @web_app.route("/serial/")
-def serial(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def serial(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     response_html = html_doc("Serial interface", f"""{serial_commands()}
 <a href="/" id="root">Back to root</a>""")
     print(response_html)
-    return "200 OK", [], [response_html]
+    return Response(request, body=response_html, content_type="text/html")
 
 
 def serial_writer(code: str) -> Optional[str]:
@@ -154,7 +153,7 @@ def serial_writer(code: str) -> Optional[str]:
 
 
 @web_app.route("/serial/<code>/")
-def serial_write(request, code) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def serial_write(request: Request, code: str) -> Response:
     print(f"\n{request.method} {request.path}")
     result = None
     unmunged = None
@@ -166,11 +165,11 @@ Result: {result}<br><br>
 {serial_commands()}
 <a href="/" id="root">Back to root</a>""")
     print(response_html)
-    return "200 OK", [], [response_html]
+    return Response(request, body=response_html, content_type="text/html")
 
 
 @web_app.route("/tv/")
-def tv(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def tv(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     response_html = html_doc("tv interface", f"""Controls:<ul>
 <li><a href="power/">power</a></li>
@@ -179,11 +178,11 @@ def tv(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 <li><a href="channel/">channel</a></li>
 </ul><a href="/" id="root">Back to root</a>""")
     print(response_html)
-    return "200 OK", [], [response_html]
+    return Response(request, body=response_html, content_type="text/html")
 
 
 @web_app.route("/tv/power/")
-def tv_power(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def tv_power(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     result = None
     result_html = ""
@@ -214,11 +213,11 @@ def tv_power(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 Power On command: <a href="?enable=1">Enable</a> <a href="?enable=0">Disable</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
+    return Response(request, body=response_html, headers={'Access-Control-Allow-Origin': '*'}, content_type="text/html")
 
 
 @web_app.route("/tv/volume/")
-def tv_volume(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def tv_volume(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     result = None
     result_html = ""
@@ -252,11 +251,11 @@ def tv_volume(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 Mute: <a href="?m=0">Toggle</a> <a href="?m=1">Mute</a> <a href="?m=2">Unmute</a> <a href="?m=s">Status</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
+    return Response(request, body=response_html, headers={'Access-Control-Allow-Origin': '*'}, content_type="text/html")
 
 
 @web_app.route("/tv/input/")
-def tv_input(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def tv_input(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     result = None
     result_html = ""
@@ -290,11 +289,11 @@ def tv_input(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 <a href="?i=x">Toggle</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
+    return Response(request, body=response_html, headers={'Access-Control-Allow-Origin': '*'}, content_type="text/html")
 
 
 @web_app.route("/tv/channel/")
-def tv_channel(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def tv_channel(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     result = None
     result_html = ""
@@ -320,13 +319,14 @@ def tv_channel(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
 <a href="?c=u">Up</a> <a href="?c=d">Down</a><br>
 <a href="/tv/" id="tv">Back to tv</a>""")
     print(response_html)
-    return "200 OK", [('Access-Control-Allow-Origin', '*')], [response_html]
+    return Response(request, body=response_html, headers={'Access-Control-Allow-Origin': '*'}, content_type="text/html")
 
 
 def html_doc(title: str, body: str) -> str:
     return f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
 <title>{title}</title>
 <style>body{{background-color:#0d1117;color:#ffffff;}}a{{color:#5b9ce6;}}</style></head>
 <body>
@@ -335,7 +335,7 @@ def html_doc(title: str, body: str) -> str:
 
 
 @web_app.route("/")
-def root(request) -> Tuple[str, List[Tuple[str, str]], List[str]]:
+def root(request: Request) -> Response:
     print(f"\n{request.method} {request.path}")
     mac = ":".join("%02X" % _ for _ in eth.mac_address)
     ip = eth.pretty_ip(eth.ip_address)
@@ -351,7 +351,7 @@ IP Address: {ip}<br>CPU Temperature: {temp} F<br></p>
 <p><a href="/tv/" id="tv">/tv/ - control the tv</a><br></p>
 </div>''')
     print(response_html)
-    return "200 OK", [], [response_html]
+    return Response(request, body=response_html, content_type="text/html")
 
 
 @web_app.route("/bootloader/")
@@ -370,16 +370,14 @@ def reboot(request):  # pylint: disable=unused-argument
 
 
 # Here we set up our server, passing in our web_app as the application
-server.set_interface(eth)
 print("Starting WSGI server")
-wsgiServer = server.WSGIServer(80, application=web_app)
-wsgiServer.start()
+web_app.start(host=str(eth.pretty_ip(eth.ip_address)), port=80)
 
 print("Open this IP in your browser: ", eth.pretty_ip(eth.ip_address))
 
 while True:
     # Our main loop where we have the server poll for incoming requests
-    wsgiServer.update_poll()
+    web_app.poll()
     # Maintain DHCP lease
     eth.maintain_dhcp_lease()
     gc.collect()

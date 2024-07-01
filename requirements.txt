@@ -1,4 +1,4 @@
-circup==1.1.2
-adafruit_requests==1.12.4;platform_system=='circuitpython'
-adafruit_wiznet5k==1.12.8;platform_system=='circuitpython'
-adafruit_wsgi==1.1.12;platform_system=='circuitpython'
+circup==2.0.2
+adafruit_requests==4.1.1;platform_system=='circuitpython'
+adafruit_wiznet5k==7.1.2;platform_system=='circuitpython'
+adafruit_httpserver==4.5.8;platform_system=='circuitpython'

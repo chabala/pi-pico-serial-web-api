@@ -415,7 +415,7 @@ final product out of it.
 All project code is MIT licensed. Adafruit library code is present as a convenience, but it retains
 its own license(s), refer to the library repositories for more detail:
  * [https://github.com/adafruit/Adafruit_CircuitPython_Requests](https://github.com/adafruit/Adafruit_CircuitPython_Requests)
- * [https://github.com/adafruit/Adafruit_CircuitPython_WSGI](https://github.com/adafruit/Adafruit_CircuitPython_WSGI)
+ * [https://github.com/adafruit/Adafruit_CircuitPython_HTTPServer](https://github.com/adafruit/Adafruit_CircuitPython_HTTPServer)
  * [https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k](https://github.com/adafruit/Adafruit_CircuitPython_Wiznet5k)
 
 This repository contains a reproduction of a single page of a manual, presumed to be under copyright
